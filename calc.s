@@ -1,13 +1,11 @@
-/* описания для main.c */
+/* РѕРїРёСЃР°РЅРёСЏ РґР»СЏ main.c */
  .text
       .global Start_DSP
-      .global InI
-      .global InJ
       .global ArrayFirst
       .global ArraySecond
 
 
-/* сегмент кода */
+/* СЃРµРіРјРµРЅС‚ РєРѕРґР° */
 Start_DSP:
 
 
@@ -21,9 +19,10 @@ Start_DSP:
          DO 8,ii
                 SUBL R0.L,R1.L,R2.L /*const J*/
 
-                MOVE ArrayFirst, A3 /* указатель на первый элемент */
+                MOVE ArrayFirst, A3 /* СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РїРµСЂРІС‹Р№ СЌР»РµРјРµРЅС‚ */
 
                 MOVE ArrayFirst, A1
+
 
                 CLRL R6.L
                 CLRD R6.D
@@ -50,16 +49,18 @@ Start_DSP:
                 jj:  (A3)+
 
 
-             /*   DO 8,mm         */
-            /*            MOVE (A1), R6.L */
-           /*             ADDL R8.L, R6.L, R8.L    */
-           /*             (A1)+ */
-           /*     mm: NOP    */
 
 
                 MOVE (A1),R6.Q
-               MAC18 R6.Q,R8.Q
+               A81 R6.Q,R8
 
+               DO 4,go
+               go: (A1)+
+
+                MOVE (A1),R6.Q
+                A81 R6.Q,R12
+
+                 ADDL R12.L,R8.L,R8.L
 
                 MOVE R8.L,(A3)
 
@@ -73,10 +74,8 @@ Start_DSP:
 
 
 
-/* сегмент данных */
+/* СЃРµРіРјРµРЅС‚ РґР°РЅРЅС‹С… */
  .data
-InI:  .word 1
-InJ:  .word 1
 ArrayFirst: .space 8*8*4, 0
 ArraySecond: .space 8*8*4, 0
 .end
